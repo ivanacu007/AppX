@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="textTitles">20sp</dimen>
+
+    <dimen name="textSecondary">14sp</dimen>
+    <dimen name="textPrimary">16sp</dimen>
+    <dimen name="textBody">14sp</dimen>
+    <dimen name="textModal">16sp</dimen>
+</resources>

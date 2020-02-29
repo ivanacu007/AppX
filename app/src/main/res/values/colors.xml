@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#8BC34A</color>
+    <color name="colorPrimaryDark">#689f38</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="colorPrimaryLight">#FFE0B2</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorTextIcons">#FFFFFF</color>
+    <color name="colorGradGrey1">#bdc3c7</color>
+    <color name="colorGradGrey2">#2c3e50</color>
+    <color name="taxiColor">#ffd600</color>
+    <color name="foodColor">#FF6D00</color>
+    <color name="servicesColor">#00b0ff</color>
+</resources>

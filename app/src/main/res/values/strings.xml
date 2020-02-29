@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">App</string>
+    <string name="comidaM">Alimentos y bebidas</string>
+    <string name="OtherServ">Otros servicios</string>
+    <string name="taxis">Sitios de taxis</string>
+    <string name="fondasM">Fondas y restaurantes</string>
+    <string name="pizzas">Pizzas y hamburguesas</string>
+    <string name="drinks">Bebidas</string>
+    <string name="cakes">Repostería</string>
+    <string name="herrero">Herrería</string>
+    <string name="meca">Mecánica</string>
+    <string name="vet">Veterinaria</string>
+    <string name="plumber">Plomería</string>
+    <string name="title_activity_food_menu">Alimentos y bebidas</string>
+    <string name="title_activity_services_menu">Otros servicios</string>
+    <string name="title_activity_carriage_menu">Servicios de transporte</string>
+    <string name="sitio_rey">Sitio Rey Irepan</string>
+    <string name="sitio_gris">Sitio Pungarabato</string>
+    <string name="title_activity_fondas_menu">Fondas y restaurantes</string>
+    <string name="laguera">Marisquería \"La güera\"</string>
+    <string name="odila">Odila Restaurant</string>
+</resources>
