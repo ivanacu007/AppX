@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(valor == 1){
             startActivity(new Intent(this, Food.class));
-            finish();
         }
 //        if(valor == 2){
 //            startActivity(intent2);

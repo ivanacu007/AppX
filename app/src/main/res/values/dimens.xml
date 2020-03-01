@@ -11,4 +11,6 @@
     <dimen name="textPrimary">16sp</dimen>
     <dimen name="textBody">14sp</dimen>
     <dimen name="textModal">16sp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
