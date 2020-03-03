@@ -63,9 +63,9 @@ public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
         holder.txName.setText(modelList.get(position).getName());
         holder.idS.setText(modelList.get(position).getId());
         if(im != ""){
-            Picasso.with(holder.itemView.getContext()).load(modelList.get(position).getImg()).into(holder.imgV);
+            Picasso.get().load(modelList.get(position).getImg()).into(holder.imgV);
         }else{
-            Picasso.with(holder.itemView.getContext()).load(R.drawable.noimg).into(holder.imgV);
+            Picasso.get().load(R.drawable.noimg).into(holder.imgV);
             holder.imgV.setScaleType(ImageView.ScaleType.FIT_CENTER);
         }
     }

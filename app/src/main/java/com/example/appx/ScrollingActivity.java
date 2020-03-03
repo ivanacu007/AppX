@@ -16,12 +16,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +31,13 @@ public class ScrollingActivity extends AppCompatActivity {
     private ProgressDialog pd;
     private FirebaseFirestore db;
     private DocumentReference documentReference;
+    private TextView txdesc;
+    private ImageView imgV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;   //null check
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -46,6 +50,8 @@ public class ScrollingActivity extends AppCompatActivity {
         pd.setTitle("Cargando...");
         pd.show();
         showData(documentReference);
+        txdesc = findViewById(R.id.txDesc);
+        imgV = findViewById(R.id.imgVS);
         //Toast.makeText(ScrollingActivity.this, "ID: "+id, Toast.LENGTH_LONG).show();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -65,8 +71,13 @@ public class ScrollingActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         //Toast.makeText(ScrollingActivity.this, documentSnapshot.getString("name"), Toast.LENGTH_LONG).show();
                         if(documentSnapshot.exists()){
-                            String name = documentSnapshot.getString("name");
-                            setActionBarTitle(name);
+                            //display attributes
+                            String name = documentSnapshot.
+                                    getString("name");
+                            String imgPath = documentSnapshot.getString("imgL");
+                            setActionBarTitle(name, imgPath);
+                            Picasso.get().load(documentSnapshot.getString("imgL")).into(imgV);
+                            txdesc.setText(documentSnapshot.getString("desc"));
                             pd.dismiss();
                         }else{
                             Toast.makeText(ScrollingActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
@@ -81,8 +92,8 @@ public class ScrollingActivity extends AppCompatActivity {
                 });
     }
 
-    public void setActionBarTitle(String title) {
-        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+    public void setActionBarTitle(String title, String img) {
+        CollapsingToolbarLayout toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbarLayout.setTitle(title);
     }
     public boolean onSupportNavigateUp(){
