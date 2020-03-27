@@ -6,7 +6,6 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import technolifestyle.com.imageslider.FlipperLayout;
 
 public class MainActivity extends AppCompatActivity {
