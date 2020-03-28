@@ -21,6 +21,8 @@ public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
     FondasRes dataActivity;
     List<FoodModel> modelList;
     Context context;
+    private FondasRes objs = new FondasRes();
+    public boolean isClickable = true;
 
     public CustomAdapter(FondasRes fondasRes, List<FoodModel> modelList) {
         this.dataActivity = fondasRes;
@@ -33,19 +35,20 @@ public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
         //inflate layout
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.model_layout, parent, false);
-        ViewHolder viewHolder = new ViewHolder(itemView);
+        final ViewHolder viewHolder = new ViewHolder(itemView);
         viewHolder.setOnClickListener(new ViewHolder.ClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 //show data in toast
+
                 String title = modelList.get(position).getName();
                 String id = modelList.get(position).getId();
-                //String desc = modelList.get(position).getDesc();
-                //Toast.makeText(dataActivity, title+"\n"+id, Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(view.getContext(), ScrollingActivity.class);
                 i.putExtra("ID", id);
+                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 view.getContext().startActivity(i);
-                //view.getContext().startActivity(new Intent(view.getContext(), ScrollingActivity.class));
+
+                //objs.mRecyclerView.setEnabled(false);
             }
 
             @Override

@@ -39,7 +39,6 @@ public class FondasRes extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         db = FirebaseFirestore.getInstance();
-        //txID = findViewById(R.id.idS);
         mRecyclerView = findViewById(R.id.recV);
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);

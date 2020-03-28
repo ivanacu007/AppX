@@ -35,7 +35,6 @@ public class ActivityDisplay extends AppCompatActivity {
 
     }
 
-
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

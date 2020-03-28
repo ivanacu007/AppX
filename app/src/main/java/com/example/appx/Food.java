@@ -10,6 +10,7 @@ import android.view.View;
 
 public class Food extends AppCompatActivity {
     private int tarjeta = 0;
+    private CardView cvFonda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,11 +18,12 @@ public class Food extends AppCompatActivity {
         assert getSupportActionBar() != null;   //null check
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CardView cvFonda = findViewById(R.id.cVm1);
+        cvFonda = findViewById(R.id.cVm1);
         cvFonda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tarjeta = 1;
+                cvFonda.setClickable(false);
                 openAct(tarjeta);
             }
         });
@@ -36,5 +38,11 @@ public class Food extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        cvFonda.setClickable(true);
+        super.onResume();
     }
 }
