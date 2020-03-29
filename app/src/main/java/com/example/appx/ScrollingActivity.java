@@ -86,10 +86,6 @@ public class ScrollingActivity extends AppCompatActivity {
         pd.setCanceledOnTouchOutside(false);
         showData(documentReference, collectionReference, imgCollectionReference);
         txdesc = findViewById(R.id.txDesc);
-/*        m1 = findViewById(R.id.descm1);
-        m2 = findViewById(R.id.descm2);
-        m3 = findViewById(R.id.descm3);
-        m4 = findViewById(R.id.descm4);*/
         txdir = findViewById(R.id.txdir);
         imgV = findViewById(R.id.imgVS);
         fMsg = findViewById(R.id.floatMsg);
@@ -121,33 +117,6 @@ public class ScrollingActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(i, ""));
             }
         });
-//        cvLoc = findViewById(R.id.cvLoc);
-//        mMapView = (MapView) findViewById(R.id.mapView);
-        //mMapView.onCreate(savedInstanceState);
-
-        //mMapView.getMapAsync();
-
-/*        cvLoc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri gmmIntentUri = Uri.parse(String.format(Locale.ENGLISH,"geo:%f,%f", lat, lon));
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
-                }
-            }
-        });*/
-        //Toast.makeText(ScrollingActivity.this, "ID: "+id, Toast.LENGTH_LONG).show();
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
     private void showData(DocumentReference ref, CollectionReference refM, CollectionReference refImg) {
@@ -162,13 +131,13 @@ public class ScrollingActivity extends AppCompatActivity {
                             String name = documentSnapshot.
                                     getString("name");
                             String imgPath = documentSnapshot.getString("imgL");
-                            String location = documentSnapshot.getString("direc");
+                            //String location = documentSnapshot.getString("direc");
                             setActionBarTitle(name);
                             Picasso.get().load(documentSnapshot.getString("imgL")).into(imgV);
                             txdesc.setText(documentSnapshot.getString("desc"));
                             //txdir.setText(documentSnapshot.getString("direc"));
-                            lat = Double.parseDouble(documentSnapshot.getString("lat"));
-                            lon = Double.parseDouble(documentSnapshot.getString("lon"));
+//                            lat = Double.parseDouble(documentSnapshot.getString("lat"));
+//                            lon = Double.parseDouble(documentSnapshot.getString("lon"));
                             //map = "http://maps.google.com/maps?q=loc:" + location;
 //                            onMapReady(map, lat, lon);
                             pd.dismiss();
@@ -202,17 +171,7 @@ public class ScrollingActivity extends AppCompatActivity {
                                 Log.d("TAG", dbtext);
                             }
                             //Log.d("TAG", String.valueOf(size));
-/*                            //Toast.makeText(ScrollingActivity.this, m1, Toast.LENGTH_LONG).show();
-                            mm1 = doc.getData().get("Antojitos").toString();
-                            mm2 = doc.getData().get("Hamburguesas").toString();
-                            mm3 = doc.getData().get("Tortas").toString();
-                            mm4 = doc.getData().get("Alitas").toString();*/
-
                         }
-                       /* m1.setText("Antojitos: " + mm1);
-                        m2.setText("Hamburguesas: " + mm2);
-                        m3.setText("Tortas: " + mm3);
-                        m4.setText("Alitas: " + mm4);*/
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -250,19 +209,8 @@ public class ScrollingActivity extends AppCompatActivity {
         //toolbarLayout.setExpandedTitleTypeface(Typeface.DEFAULT_BOLD);
         toolbarLayout.setExpandedTitleMarginStart(30);
         toolbarLayout.setExpandedTitleMarginBottom(30);
-
     }
-
-  /*  public void hideText() {
-        m1.setVisibility(View.GONE);
-        m2.setVisibility(View.GONE);
-        m3.setVisibility(View.GONE);
-        m4.setVisibility(View.GONE);
-    }*/
-
-    public void showMenu() {
-
-    }
+    
     public boolean onSupportNavigateUp(){
         onBackPressed();
         return true;
