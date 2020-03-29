@@ -52,12 +52,8 @@ public class ScrollingActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private DocumentReference documentReference, documentReferenceM;
     private CollectionReference collectionReference, imgCollectionReference;
-    private TextView txdesc, m1, m2, m3, m4, txdir;
+    private TextView txdesc;
     private ImageView imgV;
-    private String mm1, mm2, mm3, mm4;
-    private CardView cvLoc;
-    private double lat, lon;
-    private MapView mMapView;
     private FloatingActionButton fMsg, fCall;
     private LinearLayout linearLayout;
     List<ImageModel> modelList = new ArrayList<>();
@@ -86,7 +82,6 @@ public class ScrollingActivity extends AppCompatActivity {
         pd.setCanceledOnTouchOutside(false);
         showData(documentReference, collectionReference, imgCollectionReference);
         txdesc = findViewById(R.id.txDesc);
-        txdir = findViewById(R.id.txdir);
         imgV = findViewById(R.id.imgVS);
         fMsg = findViewById(R.id.floatMsg);
         fCall = findViewById(R.id.floatCall);
@@ -210,7 +205,7 @@ public class ScrollingActivity extends AppCompatActivity {
         toolbarLayout.setExpandedTitleMarginStart(30);
         toolbarLayout.setExpandedTitleMarginBottom(30);
     }
-    
+
     public boolean onSupportNavigateUp(){
         onBackPressed();
         return true;
