@@ -35,9 +35,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private double lat, lon;
     private MapView mMapView;
     private FloatingActionButton fMsg, fCall;
+    private LinearLayout linearLayout;
     List<ImageModel> modelList = new ArrayList<>();
     RecyclerView mRecyclerView;
     CustomImageAdapter adapter;
@@ -79,17 +82,19 @@ public class ScrollingActivity extends AppCompatActivity {
         imgCollectionReference = db.document(aux).collection("Imagenes");
         pd.setTitle(R.string.pdload);
         pd.show();
+        pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
         showData(documentReference, collectionReference, imgCollectionReference);
         txdesc = findViewById(R.id.txDesc);
-        m1 = findViewById(R.id.descm1);
+/*        m1 = findViewById(R.id.descm1);
         m2 = findViewById(R.id.descm2);
         m3 = findViewById(R.id.descm3);
-        m4 = findViewById(R.id.descm4);
+        m4 = findViewById(R.id.descm4);*/
         txdir = findViewById(R.id.txdir);
         imgV = findViewById(R.id.imgVS);
         fMsg = findViewById(R.id.floatMsg);
         fCall = findViewById(R.id.floatCall);
-
+        linearLayout = findViewById(R.id.linearMenu);
         mRecyclerView = findViewById(R.id.recVIMG);
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
@@ -185,16 +190,29 @@ public class ScrollingActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot doc : task.getResult()) {
                             String id = doc.getId();
+                            String index;
+                            int size = doc.getData().size();
+                            for (int i = 1; i <= size; i++) {
+                                index = String.valueOf(i);
+                                String dbtext = doc.getData().get(index).toString();
+                                TextView textView = new TextView(ScrollingActivity.this);
+                                textView.setText(dbtext);
+                                textView.setTextSize(16);
+                                linearLayout.addView(textView);
+                                Log.d("TAG", dbtext);
+                            }
+                            //Log.d("TAG", String.valueOf(size));
+/*                            //Toast.makeText(ScrollingActivity.this, m1, Toast.LENGTH_LONG).show();
                             mm1 = doc.getData().get("Antojitos").toString();
                             mm2 = doc.getData().get("Hamburguesas").toString();
                             mm3 = doc.getData().get("Tortas").toString();
-                            mm4 = doc.getData().get("Alitas").toString();
-                            //Toast.makeText(ScrollingActivity.this, m1, Toast.LENGTH_LONG).show();
+                            mm4 = doc.getData().get("Alitas").toString();*/
+
                         }
-                        m1.setText("Antojitos: " + mm1);
+                       /* m1.setText("Antojitos: " + mm1);
                         m2.setText("Hamburguesas: " + mm2);
                         m3.setText("Tortas: " + mm3);
-                        m4.setText("Alitas: " + mm4);
+                        m4.setText("Alitas: " + mm4);*/
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -235,12 +253,12 @@ public class ScrollingActivity extends AppCompatActivity {
 
     }
 
-    public void hideText() {
+  /*  public void hideText() {
         m1.setVisibility(View.GONE);
         m2.setVisibility(View.GONE);
         m3.setVisibility(View.GONE);
         m4.setVisibility(View.GONE);
-    }
+    }*/
 
     public void showMenu() {
 

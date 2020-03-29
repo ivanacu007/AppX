@@ -50,6 +50,8 @@ public class FondasRes extends AppCompatActivity {
     private void showData() {
         pd.setTitle("Cargando datos...");
         pd.show();
+        pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
         db.collection("negocios").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
