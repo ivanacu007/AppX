@@ -47,7 +47,6 @@ public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
                 i.putExtra("ID", id);
                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 view.getContext().startActivity(i);
-
                 //objs.mRecyclerView.setEnabled(false);
             }
 

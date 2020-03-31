@@ -30,6 +30,7 @@ public class FondasRes extends AppCompatActivity {
     FirebaseFirestore db;
     CustomAdapter adapter;
     ProgressDialog pd;
+    int tipoD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,11 @@ public class FondasRes extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
+        Intent intent = getIntent();
         pd = new ProgressDialog(this);
+        final String typeB = intent.getExtras().getString("TIPO");
+        tipoD = Integer.parseInt(typeB);
+        changeTitle();
         showData();
     }
 
@@ -58,8 +63,10 @@ public class FondasRes extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot doc: task.getResult()){
                             int status = doc.getLong("estatus").intValue();
+                            int tipo = doc.getLong("tipo").intValue();
                             String id = doc.getId();
-                            if(status > 0){
+                            //int typeB = Integer.parseInt(type);
+                            if (status > 0 && tipo == tipoD) {
                                 FoodModel model = new FoodModel(
                                         doc.getString("id"),
                                         doc.getString("name"),
@@ -70,6 +77,8 @@ public class FondasRes extends AppCompatActivity {
                                 modelList.add(model);
                                 adapter = new CustomAdapter(FondasRes.this,modelList);
                                 mRecyclerView.setAdapter(adapter);
+                            } else {
+                                Toast.makeText(FondasRes.this, "No se encontraron datos disponibles", Toast.LENGTH_SHORT).show();
                             }
                         }
                         pd.dismiss();
@@ -82,6 +91,18 @@ public class FondasRes extends AppCompatActivity {
                         Toast.makeText(FondasRes.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void changeTitle() {
+        if (tipoD == 1) {
+            this.setTitle(R.string.tipo1);
+        }
+        if (tipoD == 2) {
+            this.setTitle(R.string.tipo2);
+        }
+        if (tipoD == 3) {
+            this.setTitle(R.string.tipo3);
+        }
     }
     public boolean onSupportNavigateUp(){
         onBackPressed();

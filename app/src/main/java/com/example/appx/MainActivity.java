@@ -50,16 +50,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openActivities(Integer valor) {
-
+        String valorTipo;
+        valorTipo = valor.toString();
         if(valor == 1){
-            startActivity(new Intent(this, Food.class));
+            //startActivity(new Intent(this, Food.class));
+            Intent i = new Intent(this, FondasRes.class);
+            i.putExtra("TIPO", valorTipo);
+            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
         }
-//        if(valor == 2){
-//            startActivity(intent2);
-//        }
-//        if(valor == 3){
-//            startActivity(intent3);
-//        }
+        if (valor == 2) {
+            Intent i = new Intent(this, FondasRes.class);
+            i.putExtra("TIPO", valorTipo);
+            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+        }
+        if (valor == 3) {
+            Intent i = new Intent(this, FondasRes.class);
+            i.putExtra("TIPO", valorTipo);
+            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+        }
     }
 
     @Override

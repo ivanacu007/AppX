@@ -88,7 +88,7 @@ public class ScrollingActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.linearMenu);
         mRecyclerView = findViewById(R.id.recVIMG);
         mRecyclerView.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
 
@@ -103,7 +103,6 @@ public class ScrollingActivity extends AppCompatActivity {
 
         fMsg.setOnClickListener(new View.OnClickListener() {
             String number = "4435981907";
-
             @Override
             public void onClick(View v) {
                 Uri uri = Uri.parse("smsto:" + number);
