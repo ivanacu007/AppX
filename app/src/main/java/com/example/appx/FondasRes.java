@@ -77,9 +77,9 @@ public class FondasRes extends AppCompatActivity {
                                 modelList.add(model);
                                 adapter = new CustomAdapter(FondasRes.this,modelList);
                                 mRecyclerView.setAdapter(adapter);
-                            } else {
+                            } /*else {
                                 Toast.makeText(FondasRes.this, "No se encontraron datos disponibles", Toast.LENGTH_SHORT).show();
-                            }
+                            }*/
                         }
                         pd.dismiss();
                     }

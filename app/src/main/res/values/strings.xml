@@ -65,4 +65,6 @@
     <string name="tipo1">Alimentos y bebidas</string>
     <string name="tipo2">Otros servicios</string>
     <string name="tipo3">Servicios de transporte</string>
+    <string name="actionCall">Llamar</string>
+    <string name="actionMsg">Mensaje</string>
 </resources>

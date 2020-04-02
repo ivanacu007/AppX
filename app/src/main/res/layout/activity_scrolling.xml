@@ -65,7 +65,8 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
             fab:fab_size="mini"
-            app:fab_icon="@drawable/phone" />
+            app:fab_icon="@drawable/phone"
+            fab:fab_title="@string/actionCall" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatMsg"
@@ -73,7 +74,8 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
             fab:fab_size="mini"
-            app:fab_icon="@drawable/comment" />
+            app:fab_icon="@drawable/comment"
+            fab:fab_title="@string/actionMsg" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

@@ -52,7 +52,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private DocumentReference documentReference, documentReferenceM;
     private CollectionReference collectionReference, imgCollectionReference;
-    private TextView txdesc;
+    private TextView txdesc, tvtitle;
     private ImageView imgV;
     private FloatingActionButton fMsg, fCall;
     private LinearLayout linearLayout;
@@ -85,6 +85,7 @@ public class ScrollingActivity extends AppCompatActivity {
         imgV = findViewById(R.id.imgVS);
         fMsg = findViewById(R.id.floatMsg);
         fCall = findViewById(R.id.floatCall);
+        tvtitle = findViewById(R.id.txTitle2);
         linearLayout = findViewById(R.id.linearMenu);
         mRecyclerView = findViewById(R.id.recVIMG);
         mRecyclerView.setHasFixedSize(true);
@@ -134,6 +135,8 @@ public class ScrollingActivity extends AppCompatActivity {
 //                            lon = Double.parseDouble(documentSnapshot.getString("lon"));
                             //map = "http://maps.google.com/maps?q=loc:" + location;
 //                            onMapReady(map, lat, lon);
+                            int tipoD = documentSnapshot.getLong("tipo").intValue();
+                            txTitle(tipoD);
                             pd.dismiss();
                         }else{
                             Toast.makeText(ScrollingActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
@@ -195,6 +198,18 @@ public class ScrollingActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    public void txTitle(int tipo) {
+        if (tipo == 1) {
+            tvtitle.setText("Menu");
+        }
+        if (tipo == 2) {
+            tvtitle.setText("Nuestros servicios");
+        }
+        if (tipo == 3) {
+            tvtitle.setText("Ofrecemos");
+        }
     }
 
     public void setActionBarTitle(String title) {
