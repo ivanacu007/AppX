@@ -30,6 +30,7 @@ public class FondasRes extends AppCompatActivity {
     FirebaseFirestore db;
     CustomAdapter adapter;
     ProgressDialog pd;
+    GridLayoutManager gridLayoutManager;
     int tipoD;
 
     @Override
@@ -38,16 +39,21 @@ public class FondasRes extends AppCompatActivity {
         setContentView(R.layout.activity_fondas_res);
         assert getSupportActionBar() != null;   //null check
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        Intent intent = getIntent();
+        final String typeB = intent.getExtras().getString("TIPO");
+        tipoD = Integer.parseInt(typeB);
         db = FirebaseFirestore.getInstance();
         mRecyclerView = findViewById(R.id.recV);
         mRecyclerView.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        if (tipoD == 3) {
+            gridLayoutManager = new GridLayoutManager(this, 1);
+        } else {
+            gridLayoutManager = new GridLayoutManager(this, 2);
+        }
         mRecyclerView.setLayoutManager(gridLayoutManager);
-        Intent intent = getIntent();
+
         pd = new ProgressDialog(this);
-        final String typeB = intent.getExtras().getString("TIPO");
-        tipoD = Integer.parseInt(typeB);
+
         changeTitle();
         showData();
     }
@@ -57,11 +63,11 @@ public class FondasRes extends AppCompatActivity {
         pd.show();
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
-        db.collection("negocios").get()
+        db.collection("negocios").orderBy("name").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (DocumentSnapshot doc: task.getResult()){
+                        for (DocumentSnapshot doc : task.getResult()) {
                             int status = doc.getLong("estatus").intValue();
                             int tipo = doc.getLong("tipo").intValue();
                             String id = doc.getId();
@@ -70,12 +76,12 @@ public class FondasRes extends AppCompatActivity {
                                 FoodModel model = new FoodModel(
                                         doc.getString("id"),
                                         doc.getString("name"),
-                                        doc.getString("des"),
+                                        doc.getString("desc"),
                                         doc.getString("img"),
                                         doc.getLong("estatus").intValue());
                                 //txID.setText(id);
                                 modelList.add(model);
-                                adapter = new CustomAdapter(FondasRes.this,modelList);
+                                adapter = new CustomAdapter(FondasRes.this, modelList);
                                 mRecyclerView.setAdapter(adapter);
                             } /*else {
                                 Toast.makeText(FondasRes.this, "No se encontraron datos disponibles", Toast.LENGTH_SHORT).show();
@@ -88,7 +94,7 @@ public class FondasRes extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         pd.dismiss();
-                        Toast.makeText(FondasRes.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FondasRes.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -104,7 +110,8 @@ public class FondasRes extends AppCompatActivity {
             this.setTitle(R.string.tipo3);
         }
     }
-    public boolean onSupportNavigateUp(){
+
+    public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }

@@ -1,7 +1,9 @@
 package com.example.appx;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.fonts.FontFamily;
 import android.net.Uri;
@@ -47,6 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import io.opencensus.internal.Utils;
+
 public class ScrollingActivity extends AppCompatActivity {
     private ProgressDialog pd;
     private FirebaseFirestore db;
@@ -56,9 +60,11 @@ public class ScrollingActivity extends AppCompatActivity {
     private ImageView imgV;
     private FloatingActionButton fMsg, fCall;
     private LinearLayout linearLayout;
-    List<ImageModel> modelList = new ArrayList<>();
-    RecyclerView mRecyclerView;
-    CustomImageAdapter adapter;
+    private String number = "4435981907";
+    //private Context context;
+    private List<ImageModel> modelList = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private CustomImageAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,19 +103,25 @@ public class ScrollingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:4435981907"));
+                intent.setData(Uri.parse(number));
                 startActivity(intent);
             }
         });
 
         fMsg.setOnClickListener(new View.OnClickListener() {
-            String number = "4435981907";
+
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("smsto:" + number);
-                Intent i = new Intent(Intent.ACTION_SENDTO, uri);
-                i.setPackage("com.whatsapp");
-                startActivity(Intent.createChooser(i, ""));
+                PackageManager pm = ScrollingActivity.this.getPackageManager();
+                boolean isInstalled = isPackageInstalled("com.whatsapp", pm);
+                if (isInstalled) {
+                    Uri uri = Uri.parse("smsto:" + number);
+                    Intent i = new Intent(Intent.ACTION_SENDTO, uri);
+                    i.setPackage("com.whatsapp");
+                    startActivity(Intent.createChooser(i, ""));
+                } else {
+                    Toast.makeText(ScrollingActivity.this, "No se encontró Whatsapp en tu dispositivo, contactanos por llamada.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -146,7 +158,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Toast.makeText(ScrollingActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -174,7 +186,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Toast.makeText(ScrollingActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -195,7 +207,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Toast.makeText(ScrollingActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -209,6 +221,14 @@ public class ScrollingActivity extends AppCompatActivity {
         }
         if (tipo == 3) {
             tvtitle.setText("Ofrecemos");
+        }
+    }
+
+    public static boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+        try {
+            return packageManager.getApplicationInfo(packageName, 0).enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
         }
     }
 
