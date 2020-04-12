@@ -67,4 +67,5 @@
     <string name="tipo3">Servicios de transporte</string>
     <string name="actionCall">Llamar</string>
     <string name="actionMsg">Mensaje</string>
+    <string name="anuncios">Anuncios destacados</string>
 </resources>

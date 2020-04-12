@@ -36,6 +36,7 @@ public class AnunciosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_anuncios);
         assert getSupportActionBar() != null;   //null check
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.setTitle(R.string.anuncios);
         db = FirebaseFirestore.getInstance();
         mRecyclerView = findViewById(R.id.recyA);
         mRecyclerView.setHasFixedSize(true);

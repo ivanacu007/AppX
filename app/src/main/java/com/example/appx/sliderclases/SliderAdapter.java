@@ -1,6 +1,7 @@
 package com.example.appx.sliderclases;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.appx.AnunciosActivity;
 import com.example.appx.MainActivity;
 import com.example.appx.R;
 import com.example.appx.models.SliderItem;
@@ -40,9 +42,10 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
         sliderViewHolder.setOnClickListener(new SliderViewHolder.ClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                String id = sliderItems.get(position).getId();
+                String id = sliderItems.get(position).getName();
                 int size = sliderItems.size();
                 Toast.makeText(context, id, Toast.LENGTH_LONG).show();
+                context.startActivity(new Intent(context, AnunciosActivity.class));
             }
         });
 

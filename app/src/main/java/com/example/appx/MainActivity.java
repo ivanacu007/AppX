@@ -209,20 +209,6 @@ public class MainActivity extends AppCompatActivity {
         flipperView.addView(image);
     }
 
-/*
-    private void cargaAnuncios(int size) {
-        String myArray[] = new String[size];
-
-        for(int i = 0; i < myArray.length; i++){
-            myArray[i] = imagesSlide.get(i);
-            //FlipperView flipperView = new FlipperView(getBaseContext());
-            flipperView.setImageUrl(myArray[i]);
-            Picasso.get().load((myArray[i])).into((Target) flipperLayout);
-            //flipperLayout.addFlipperView(flipperView);
-        }
-    }
-*/
-
     @Override
     protected void onResume() {
         card.setClickable(true);
