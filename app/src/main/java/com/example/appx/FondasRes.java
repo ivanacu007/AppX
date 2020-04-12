@@ -68,6 +68,7 @@ public class FondasRes extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot doc : task.getResult()) {
+                            //Toast.makeText(FondasRes.this, String.valueOf(doc.getData().size()), Toast.LENGTH_LONG).show();
                             int status = doc.getLong("estatus").intValue();
                             int tipo = doc.getLong("tipo").intValue();
                             String id = doc.getId();
@@ -87,6 +88,7 @@ public class FondasRes extends AppCompatActivity {
                                 Toast.makeText(FondasRes.this, "No se encontraron datos disponibles", Toast.LENGTH_SHORT).show();
                             }*/
                         }
+
                         pd.dismiss();
                     }
                 })

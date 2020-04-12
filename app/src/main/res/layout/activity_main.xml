@@ -31,30 +31,37 @@
             app:layout_constraintTop_toBottomOf="@+id/cardPromo"
             />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardPromo"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardPromo"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <!--<technolifestyle.com.imageslider.FlipperLayout
+        <!--<technolifestyle.com.imageslider.FlipperLayout
                 android:id="@+id/flipper"
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />-->
-            <ViewFlipper
+        <!-- <ViewFlipper
                 android:id="@+id/flipper"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.cardview.widget.CardView>
+                android:layout_height="match_parent" />-->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFF"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
+    </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardFood"
