@@ -1,6 +1,7 @@
 package com.example.appx;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,8 +17,12 @@ import com.example.appx.models.FoodModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -31,6 +36,8 @@ public class FondasRes extends AppCompatActivity {
     CustomAdapter adapter;
     ProgressDialog pd;
     GridLayoutManager gridLayoutManager;
+    CollectionReference collectionRef;
+    String pdString = "Cargando datos...";
     int tipoD;
 
     @Override
@@ -43,6 +50,7 @@ public class FondasRes extends AppCompatActivity {
         final String typeB = intent.getExtras().getString("TIPO");
         tipoD = Integer.parseInt(typeB);
         db = FirebaseFirestore.getInstance();
+        collectionRef = db.collection("negocios");
         mRecyclerView = findViewById(R.id.recV);
         mRecyclerView.setHasFixedSize(true);
         if (tipoD == 3) {
@@ -55,15 +63,15 @@ public class FondasRes extends AppCompatActivity {
         pd = new ProgressDialog(this);
 
         changeTitle();
-        showData();
+        getData(collectionRef);
     }
 
-    private void showData() {
-        pd.setTitle("Cargando datos...");
+    private void getData(CollectionReference refColl) {
+        pd.setTitle(pdString);
         pd.show();
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
-        db.collection("negocios").orderBy("name").get()
+        refColl.orderBy("name").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -101,6 +109,7 @@ public class FondasRes extends AppCompatActivity {
                 });
     }
 
+
     public void changeTitle() {
         if (tipoD == 1) {
             this.setTitle(R.string.tipo1);
@@ -116,5 +125,58 @@ public class FondasRes extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        refreshData();
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        //showAnuncios();
+        super.onResume();
+        //refreshData();
+    }
+
+    public void refreshData() {
+        collectionRef.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Toast.makeText(FondasRes.this, "Error getting data", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                    int oldIndex = dc.getOldIndex();
+                    int newIndex = dc.getNewIndex();
+                    int size = queryDocumentSnapshots.getDocumentChanges().size();
+                    switch (dc.getType()) {
+                        case ADDED:
+                            if (size == 1) {
+                                pdString = "Nuevos datos agregados";
+                                modelList.clear();
+                                getData(collectionRef);
+                                pd.dismiss();
+                                Toast.makeText(FondasRes.this, "Documento agregado", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case MODIFIED:
+                            pdString = "Actualizando datos...";
+                            modelList.clear();
+                            if (oldIndex == newIndex) {
+                                getData(collectionRef);
+                                pd.dismiss();
+                            }
+                            Toast.makeText(FondasRes.this, "Documentos actualizados", Toast.LENGTH_SHORT).show();
+                            break;
+                        case REMOVED:
+                            Toast.makeText(FondasRes.this, "Removed", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }
+        });
     }
 }

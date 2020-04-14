@@ -68,4 +68,6 @@
     <string name="actionCall">Llamar</string>
     <string name="actionMsg">Mensaje</string>
     <string name="anuncios">Anuncios destacados</string>
+    <string name="loadingData">Cargando datos...</string>
+    <string name="updatedData">Actualizando datos...</string>
 </resources>

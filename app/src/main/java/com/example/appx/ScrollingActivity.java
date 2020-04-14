@@ -24,13 +24,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -65,6 +69,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private List<ImageModel> modelList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private CustomImageAdapter adapter;
+    private String pdString = "Cargando datos...";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +91,6 @@ public class ScrollingActivity extends AppCompatActivity {
         pd.show();
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
-        showData(documentReference, collectionReference, imgCollectionReference);
         txdesc = findViewById(R.id.txDesc);
         imgV = findViewById(R.id.imgVS);
         fMsg = findViewById(R.id.floatMsg);
@@ -98,6 +102,9 @@ public class ScrollingActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
+        getData(documentReference);
+        getMenuData(collectionReference);
+        getImgData(imgCollectionReference);
 
         fCall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +133,7 @@ public class ScrollingActivity extends AppCompatActivity {
         });
     }
 
-    private void showData(DocumentReference ref, CollectionReference refM, CollectionReference refImg) {
+    private void getData(DocumentReference ref) {
         //String docid = id;
         ref.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -142,11 +149,6 @@ public class ScrollingActivity extends AppCompatActivity {
                             setActionBarTitle(name);
                             Picasso.get().load(documentSnapshot.getString("imgL")).into(imgV);
                             txdesc.setText(documentSnapshot.getString("desc"));
-                            //txdir.setText(documentSnapshot.getString("direc"));
-//                            lat = Double.parseDouble(documentSnapshot.getString("lat"));
-//                            lon = Double.parseDouble(documentSnapshot.getString("lon"));
-                            //map = "http://maps.google.com/maps?q=loc:" + location;
-//                            onMapReady(map, lat, lon);
                             int tipoD = documentSnapshot.getLong("tipo").intValue();
                             txTitle(tipoD);
                             pd.dismiss();
@@ -161,7 +163,9 @@ public class ScrollingActivity extends AppCompatActivity {
                         Toast.makeText(ScrollingActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
 
+    public void getMenuData(CollectionReference refM) {
         refM.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -189,7 +193,9 @@ public class ScrollingActivity extends AppCompatActivity {
                         Toast.makeText(ScrollingActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
 
+    public void getImgData(CollectionReference refImg) {
         refImg.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -197,7 +203,6 @@ public class ScrollingActivity extends AppCompatActivity {
                         for (DocumentSnapshot doc : task.getResult()) {
                             ImageModel model = new ImageModel(
                                     doc.getString("img"));
-
                             modelList.add(model);
                             adapter = new CustomImageAdapter(ScrollingActivity.this, modelList);
                             mRecyclerView.setAdapter(adapter);
@@ -244,4 +249,16 @@ public class ScrollingActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //refreshMenuData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
 }

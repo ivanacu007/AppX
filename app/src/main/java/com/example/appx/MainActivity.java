@@ -1,6 +1,7 @@
 package com.example.appx;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,8 +9,9 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,21 +19,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
-import com.example.appx.models.FoodModel;
 import com.example.appx.models.SliderItem;
 import com.example.appx.sliderclases.SliderAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.smarteist.autoimageslider.IndicatorAnimations;
-import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
@@ -39,22 +41,20 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private int tarjeta = 0;
+    Context context;
     //    private FlipperLayout flipperLayout;
     private CardView card, cardServ, cardTax, cardPromo;
+    private ProgressBar progressBar;
     private FirebaseFirestore db;
     private List<String> imagesSlide = new ArrayList<>();
     private List<SliderItem> modelList = new ArrayList<>();
-    //List<FoodModel> modelList = new ArrayList<>();
-    ViewFlipper flipperView;
-    SliderView sliderView;
-    //private SliderCustomAdapter adapter;
-    //SliderItem sliderItem = new SliderItem();
-    SliderAdapter adapter;
-    int x;
-
+    private CollectionReference collectionReference;
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
-
+    String pdString = "Cargando datos...";
+    SliderAdapter adapter;
+    int x;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,30 +62,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("anuncios");
+        pd = new ProgressDialog(this);
         //flipperView = new FlipperView(getBaseContext());
         card = findViewById(R.id.cardFood);
         cardServ = findViewById(R.id.cardServices);
         cardTax = findViewById(R.id.cardTaxi);
         viewPager2 = findViewById(R.id.viewPager2);
         cardPromo = findViewById(R.id.cardPromo);
-
-
-
-
-        /*int img[] = {R.drawable.portadapp};
-        flipperView = findViewById(R.id.flipper);
-        for (int i = 0; i < img.length; i++) {
-            setFlipperImage(img[i]);
-        }
-        flipperView.setOnClickListener(new View.OnClickListener() {
+        progressBar = findViewById(R.id.progressBar);
+        viewPager2.setVisibility(View.INVISIBLE);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AnunciosActivity.class));
+            public void run() {
+                //Do something after 100ms
+                progressBar.setVisibility(View.GONE);
+                viewPager2.setVisibility(View.VISIBLE);
             }
-        });*/
-        //sliderView = findViewById(R.id.imageSlider);
+        }, 5000);
+        //loadingImages();
+        getAnuncios(collectionReference);
         showAnuncios();
-        //showAnuncios();
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,8 +108,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showAnuncios() {
-        db.collection("anuncios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void loadingImages() {
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        viewPager2.setVisibility(View.VISIBLE);
+                    }
+                },
+                5000
+        );
+    }
+
+    private void getAnuncios(CollectionReference refM) {
+        pd.setTitle(pdString);
+        pd.show();
+        pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
+        refM.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot doc : task.getResult()) {
@@ -123,59 +137,44 @@ public class MainActivity extends AppCompatActivity {
                     );
                     modelList.add(model);
                     adapter = new SliderAdapter(modelList, viewPager2);
+                    //adapter.notifyDataSetChanged();
                     viewPager2.setAdapter(adapter);
-    /*                 x = doc.getData().size();
-                    SliderItem sliderItem = new SliderItem();
-                    sliderItem.setImageUrl(doc.getString("img"));
-                    sliderItem.setId(doc.getString("id"));
-                    sliderItem.setDescription(doc.getString("desc"));
-                    sliderItem.setName(doc.getString("name"));
-                    sliderItems.add(sliderItem);
-
-                    //adapter.addItem(sliderItem);
-                    adapter = new SliderAdapter(sliderItems, viewPager2);
-                    viewPager2.setAdapter(adapter);
-*/
                 }
-                Toast.makeText(MainActivity.this, String.valueOf(x), Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.this, String.valueOf(x), Toast.LENGTH_LONG).show();
                 //Log.d("TAG", sliderItems.toString());
-                viewPager2.setClipToPadding(false);
-                viewPager2.setClipChildren(false);
-                viewPager2.setOffscreenPageLimit(3);
-                viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-                CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-                compositePageTransformer.addTransformer(new MarginPageTransformer(20));
-                compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
-                    @Override
-                    public void transformPage(@NonNull View page, float position) {
-                        float r = 1 - Math.abs(position);
-                        page.setScaleY(0.85f + r * 0.15f);
-                    }
-                });
-                viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        super.onPageSelected(position);
-                        sliderHandler.removeCallbacks(slideRunnable);
-                        sliderHandler.postDelayed(slideRunnable, 3000); //duracion del slide 3 sec
-                    }
-                });
-                viewPager2.setPageTransformer(compositePageTransformer);
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
 
-
-//        for (int i = 0; i < 3; i++) {
-//            sliderItem.setDescription("Slider Item Added Manually");
-//            sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
-//            adapter.addItem(sliderItem);
-//        }
+    public void showAnuncios() {
+        viewPager2.setClipToPadding(false);
+        viewPager2.setClipChildren(false);
+        viewPager2.setOffscreenPageLimit(3);
+        viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        compositePageTransformer.addTransformer(new MarginPageTransformer(20));
+        compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                float r = 1 - Math.abs(position);
+                page.setScaleY(0.85f + r * 0.15f);
+            }
+        });
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                sliderHandler.removeCallbacks(slideRunnable);
+                sliderHandler.postDelayed(slideRunnable, 3000); //duracion del slide 3 sec
+            }
+        });
+        viewPager2.setPageTransformer(compositePageTransformer);
+        pd.dismiss();
     }
 
     public void openActivities(Integer valor) {
@@ -202,18 +201,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setFlipperImage(int res) {
-        Log.i("Set Filpper Called", res + "");
-        ImageView image = new ImageView(getApplicationContext());
-        image.setBackgroundResource(res);
-        flipperView.addView(image);
-    }
+    private Runnable slideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
+        }
+    };
 
     @Override
+    protected void onStart() {
+        refreshData();
+        card.setClickable(true);
+        sliderHandler.postDelayed(slideRunnable, 3000);
+        super.onStart();
+    }
+    @Override
     protected void onResume() {
+        //showAnuncios();
         card.setClickable(true);
         sliderHandler.postDelayed(slideRunnable, 3000);
         super.onResume();
+        //refreshData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sliderHandler.removeCallbacks(slideRunnable);
     }
 
     @Override
@@ -236,20 +250,43 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Runnable slideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
-        }
-    };
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        sliderHandler.removeCallbacks(slideRunnable);
-    }
-
-    public void cardPromoClick(View view) {
-        startActivity(new Intent(MainActivity.this, AnunciosActivity.class));
+    public void refreshData() {
+        collectionReference.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Toast.makeText(MainActivity.this, "Error getting data", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                    int oldIndex = dc.getOldIndex();
+                    int newIndex = dc.getNewIndex();
+                    int size = queryDocumentSnapshots.getDocumentChanges().size();
+                    switch (dc.getType()) {
+                        case ADDED:
+                            if (size == 1) {
+                                pdString = "Nuevos datos agregados";
+                                modelList.clear();
+                                getAnuncios(collectionReference);
+                                pd.dismiss();
+                                Toast.makeText(MainActivity.this, "Documento agregado", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case MODIFIED:
+                            pdString = "Actualizando datos...";
+                            modelList.clear();
+                            if (oldIndex == newIndex) {
+                                getAnuncios(collectionReference);
+                                pd.dismiss();
+                            }
+                            Toast.makeText(MainActivity.this, "Documentos actualizados", Toast.LENGTH_SHORT).show();
+                            break;
+                        case REMOVED:
+                            Toast.makeText(MainActivity.this, "Removed", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }
+        });
     }
 }
