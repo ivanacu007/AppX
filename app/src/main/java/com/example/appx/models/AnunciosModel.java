@@ -1,17 +1,26 @@
 package com.example.appx.models;
 
 public class AnunciosModel {
-    String name, desc, imgurl, id;
+    String name, desc, imgurl, id, sms;
 
     public AnunciosModel() {
 
     }
 
-    public AnunciosModel(String name, String desc, String imgurl, String id) {
+    public AnunciosModel(String name, String desc, String imgurl, String id, String sms) {
         this.name = name;
         this.desc = desc;
         this.imgurl = imgurl;
         this.id = id;
+        this.sms = sms;
+    }
+
+    public String getSms() {
+        return sms;
+    }
+
+    public void setSms(String sms) {
+        this.sms = sms;
     }
 
     public String getName() {

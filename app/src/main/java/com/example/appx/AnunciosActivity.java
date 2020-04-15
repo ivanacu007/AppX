@@ -60,7 +60,8 @@ public class AnunciosActivity extends AppCompatActivity {
                                     doc.getString("name"),
                                     doc.getString("desc"),
                                     doc.getString("img"),
-                                    doc.getString("id")
+                                    doc.getString("id"),
+                                    doc.getString("sms")
                             );
                             modelList.add(anunciosModel);
                             adapter = new CustomPromoAdapter(AnunciosActivity.this, modelList);

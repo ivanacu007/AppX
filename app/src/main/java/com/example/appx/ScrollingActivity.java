@@ -1,8 +1,10 @@
 package com.example.appx;
 
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.fonts.FontFamily;
@@ -41,6 +43,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -64,12 +67,14 @@ public class ScrollingActivity extends AppCompatActivity {
     private ImageView imgV;
     private FloatingActionButton fMsg, fCall;
     private LinearLayout linearLayout;
-    private String number = "4435981907";
+    private String number = "+5214435981907";
+    private String wMessage = "Mensaje de prueba perro";
     //private Context context;
     private List<ImageModel> modelList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private CustomImageAdapter adapter;
     private String pdString = "Cargando datos...";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +87,9 @@ public class ScrollingActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
         String id = intent.getExtras().getString("ID");
-        String aux = "negocios/"+id;
+        String aux = "negocios/" + id;
         //String aux2 = "negocios/"+id;
-        documentReference  = db.document(aux);
+        documentReference = db.document(aux);
         collectionReference = db.document(aux).collection("Menu");
         imgCollectionReference = db.document(aux).collection("Imagenes");
         pd.setTitle(R.string.pdload);
@@ -116,21 +121,28 @@ public class ScrollingActivity extends AppCompatActivity {
         });
 
         fMsg.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                PackageManager pm = ScrollingActivity.this.getPackageManager();
-                boolean isInstalled = isPackageInstalled("com.whatsapp", pm);
-                if (isInstalled) {
-                    Uri uri = Uri.parse("smsto:" + number);
-                    Intent i = new Intent(Intent.ACTION_SENDTO, uri);
-                    i.setPackage("com.whatsapp");
-                    startActivity(Intent.createChooser(i, ""));
-                } else {
-                    Toast.makeText(ScrollingActivity.this, "No se encontró Whatsapp en tu dispositivo, contactanos por llamada.", Toast.LENGTH_LONG).show();
-                }
+                openWhatsApp();
             }
         });
+    }
+
+    private void openWhatsApp() {
+        PackageManager pm = ScrollingActivity.this.getPackageManager();
+        boolean isInstalled = isPackageInstalled("com.whatsapp", pm);
+        if (isInstalled) {
+            Intent sendIntent = new Intent("android.intent.action.MAIN");
+            sendIntent.setAction(Intent.ACTION_VIEW);
+            sendIntent.setPackage("com.whatsapp");
+            String url = "https://api.whatsapp.com/send?phone=" + number + "&text=" + wMessage;
+            sendIntent.setData(Uri.parse(url));
+            if (sendIntent.resolveActivity(ScrollingActivity.this.getPackageManager()) != null) {
+                startActivity(sendIntent);
+            }
+        } else {
+            Toast.makeText(ScrollingActivity.this, "No se encontró Whatsapp en tu dispositivo, contactanos por llamada.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void getData(DocumentReference ref) {
@@ -140,19 +152,17 @@ public class ScrollingActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         //Toast.makeText(ScrollingActivity.this, documentSnapshot.getString("name"), Toast.LENGTH_LONG).show();
-                        if(documentSnapshot.exists()){
+                        if (documentSnapshot.exists()) {
                             //display attributes
                             String name = documentSnapshot.
                                     getString("name");
-                            String imgPath = documentSnapshot.getString("imgL");
-                            //String location = documentSnapshot.getString("direc");
                             setActionBarTitle(name);
                             Picasso.get().load(documentSnapshot.getString("imgL")).into(imgV);
                             txdesc.setText(documentSnapshot.getString("desc"));
                             int tipoD = documentSnapshot.getLong("tipo").intValue();
                             txTitle(tipoD);
                             pd.dismiss();
-                        }else{
+                        } else {
                             Toast.makeText(ScrollingActivity.this, "El documento no existe", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -245,7 +255,7 @@ public class ScrollingActivity extends AppCompatActivity {
         toolbarLayout.setExpandedTitleMarginBottom(30);
     }
 
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
@@ -260,5 +270,4 @@ public class ScrollingActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
-
 }

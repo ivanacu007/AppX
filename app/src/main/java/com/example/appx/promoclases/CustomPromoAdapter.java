@@ -1,15 +1,20 @@
 package com.example.appx.promoclases;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appx.AnunciosActivity;
 import com.example.appx.R;
+import com.example.appx.ScrollingActivity;
 import com.example.appx.imgclases.ImageViewHolder;
 import com.example.appx.models.AnunciosModel;
 import com.example.appx.models.ImageModel;
@@ -29,13 +34,17 @@ public class CustomPromoAdapter extends RecyclerView.Adapter<PromoViewHolder> {
     @NonNull
     @Override
     public PromoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+        final View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.model_an, parent, false);
-        PromoViewHolder viewHolder = new PromoViewHolder(itemView);
+        final PromoViewHolder viewHolder = new PromoViewHolder(itemView);
         viewHolder.setOnClickListener(new PromoViewHolder.ClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                String name = modelList.get(position).getName();
+                String sms = modelList.get(position).getSms();
+                String smstext = modelList.get(position).getDesc();
+                openWhatsApp(itemView, sms, smstext);
+                Toast.makeText(anunciosActivity, name, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -60,4 +69,30 @@ public class CustomPromoAdapter extends RecyclerView.Adapter<PromoViewHolder> {
     public int getItemCount() {
         return modelList.size();
     }
+
+    private void openWhatsApp(View view, String smsto, String smstext) {
+        PackageManager pm = view.getContext().getPackageManager();
+        boolean isInstalled = isPackageInstalled("com.whatsapp", pm);
+        if (isInstalled) {
+            Intent sendIntent = new Intent("android.intent.action.MAIN");
+            sendIntent.setAction(Intent.ACTION_VIEW);
+            sendIntent.setPackage("com.whatsapp");
+            String url = "https://api.whatsapp.com/send?phone=" + smsto + "&text=" + smstext;
+            sendIntent.setData(Uri.parse(url));
+            if (sendIntent.resolveActivity(view.getContext().getPackageManager()) != null) {
+                view.getContext().startActivity(sendIntent);
+            }
+        } else {
+            Toast.makeText(view.getContext(), "No se encontró Whatsapp en tu dispositivo, contactanos por llamada.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+        try {
+            return packageManager.getApplicationInfo(packageName, 0).enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
 }
