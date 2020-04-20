@@ -7,12 +7,11 @@ public class AnunciosModel {
 
     }
 
-    public AnunciosModel(String name, String desc, String imgurl, String id, String sms) {
+    public AnunciosModel(String name, String desc, String imgurl, String id) {
         this.name = name;
         this.desc = desc;
         this.imgurl = imgurl;
         this.id = id;
-        this.sms = sms;
     }
 
     public String getSms() {

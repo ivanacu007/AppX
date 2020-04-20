@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -41,6 +42,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private int tarjeta = 0;
+    private boolean menuinfo = false;
     Context context;
     //    private FlipperLayout flipperLayout;
     private CardView card, cardServ, cardTax, cardPromo;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     SliderAdapter adapter;
     int x;
     ProgressDialog pd;
+    MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         cardPromo = findViewById(R.id.cardPromo);
         progressBar = findViewById(R.id.progressBar);
         viewPager2.setVisibility(View.INVISIBLE);
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -194,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         }
         if (valor == 3) {
-            Intent i = new Intent(this, FondasRes.class);
-            i.putExtra("TIPO", valorTipo);
+            Intent i = new Intent(this, PersonShop.class);
+            //i.putExtra("TIPO", valorTipo);
             i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(i);
         }
@@ -233,7 +237,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_principal, menu); //your file name
+        inflater.inflate(R.menu.menu_principal, menu);
+        //your file name
+        menuItem = menu.findItem(R.id.covid);
+        menuItem.setVisible(menuinfo);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -282,11 +289,19 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Documentos actualizados", Toast.LENGTH_SHORT).show();
                             break;
                         case REMOVED:
+                            modelList.clear();
+                            getAnuncios(collectionReference);
+                            pd.dismiss();
                             Toast.makeText(MainActivity.this, "Removed", Toast.LENGTH_SHORT).show();
                             break;
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

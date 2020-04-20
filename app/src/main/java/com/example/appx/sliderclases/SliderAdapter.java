@@ -44,7 +44,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
             public void onItemClick(View view, int position) {
                 String id = sliderItems.get(position).getName();
 //                int size = sliderItems.size();
-                Toast.makeText(context, id, Toast.LENGTH_LONG).show();
+                ///Toast.makeText(context, id, Toast.LENGTH_LONG).show();
                 context.startActivity(new Intent(context, AnunciosActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
             }
         });

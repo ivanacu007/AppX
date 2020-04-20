@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -25,7 +27,7 @@ import java.util.List;
 public class AnunciosActivity extends AppCompatActivity {
     List<AnunciosModel> modelList = new ArrayList<>();
     RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager layoutManager;
+    //RecyclerView.LayoutManager layoutManager;
     FirebaseFirestore db;
     CustomPromoAdapter adapter;
     ProgressDialog pd;
@@ -51,7 +53,7 @@ public class AnunciosActivity extends AppCompatActivity {
         pd.show();
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
-        db.collection("anuncios").get()
+        db.collection("anuncios").orderBy("id").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -60,8 +62,7 @@ public class AnunciosActivity extends AppCompatActivity {
                                     doc.getString("name"),
                                     doc.getString("desc"),
                                     doc.getString("img"),
-                                    doc.getString("id"),
-                                    doc.getString("sms")
+                                    doc.getString("id")
                             );
                             modelList.add(anunciosModel);
                             adapter = new CustomPromoAdapter(AnunciosActivity.this, modelList);
@@ -83,4 +84,16 @@ public class AnunciosActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
 }

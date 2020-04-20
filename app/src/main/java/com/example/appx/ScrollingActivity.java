@@ -62,18 +62,20 @@ public class ScrollingActivity extends AppCompatActivity {
     private ProgressDialog pd;
     private FirebaseFirestore db;
     private DocumentReference documentReference, documentReferenceM;
-    private CollectionReference collectionReference, imgCollectionReference;
+    private CollectionReference collectionReference, imgCollectionReference, contactReference;
     private TextView txdesc, tvtitle;
     private ImageView imgV;
     private FloatingActionButton fMsg, fCall;
     private LinearLayout linearLayout;
-    private String number = "+5214435981907";
+    private String number, number2;
     private String wMessage = "Mensaje de prueba perro";
     //private Context context;
     private List<ImageModel> modelList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private CustomImageAdapter adapter;
     private String pdString = "Cargando datos...";
+    private String numberWhats;
+    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class ScrollingActivity extends AppCompatActivity {
         documentReference = db.document(aux);
         collectionReference = db.document(aux).collection("Menu");
         imgCollectionReference = db.document(aux).collection("Imagenes");
+        contactReference = db.collection("contacto");
         pd.setTitle(R.string.pdload);
         pd.show();
         pd.setCancelable(false);
@@ -107,6 +110,7 @@ public class ScrollingActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
+        getContactData(contactReference);
         getData(documentReference);
         getMenuData(collectionReference);
         getImgData(imgCollectionReference);
@@ -114,9 +118,7 @@ public class ScrollingActivity extends AppCompatActivity {
         fCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse(number));
-                startActivity(intent);
+                openDialer();
             }
         });
 
@@ -128,14 +130,21 @@ public class ScrollingActivity extends AppCompatActivity {
         });
     }
 
+    private void openDialer() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + number));
+        startActivity(intent);
+    }
+
     private void openWhatsApp() {
+        numberWhats = "+521" + number;
         PackageManager pm = ScrollingActivity.this.getPackageManager();
         boolean isInstalled = isPackageInstalled("com.whatsapp", pm);
         if (isInstalled) {
             Intent sendIntent = new Intent("android.intent.action.MAIN");
             sendIntent.setAction(Intent.ACTION_VIEW);
             sendIntent.setPackage("com.whatsapp");
-            String url = "https://api.whatsapp.com/send?phone=" + number + "&text=" + wMessage;
+            String url = "https://api.whatsapp.com/send?phone=" + numberWhats + "&text=" + wMessage;
             sendIntent.setData(Uri.parse(url));
             if (sendIntent.resolveActivity(ScrollingActivity.this.getPackageManager()) != null) {
                 startActivity(sendIntent);
@@ -143,6 +152,25 @@ public class ScrollingActivity extends AppCompatActivity {
         } else {
             Toast.makeText(ScrollingActivity.this, "No se encontró Whatsapp en tu dispositivo, contactanos por llamada.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void getContactData(CollectionReference refCon) {
+        refCon.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (DocumentSnapshot doc : task.getResult()) {
+                            number = doc.getString("numuno");
+                            number2 = doc.getString("numdos");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
     private void getData(DocumentReference ref) {
@@ -190,6 +218,8 @@ public class ScrollingActivity extends AppCompatActivity {
                                 TextView textView = new TextView(ScrollingActivity.this);
                                 textView.setText(dbtext);
                                 textView.setTextSize(16);
+                                params.setMargins(0, 0, 0, 10);
+                                textView.setLayoutParams(params);
                                 linearLayout.addView(textView);
                                 Log.d("TAG", dbtext);
                             }

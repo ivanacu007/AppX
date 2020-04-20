@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/covid"
+        android:icon="@drawable/covid19"
+        android:title="@string/covid_string"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/info"
-        android:icon="@drawable/info"
-        android:title="@string/action_settings" />
+        android:icon="@drawable/settingswhite2"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom" />
+
 </menu>

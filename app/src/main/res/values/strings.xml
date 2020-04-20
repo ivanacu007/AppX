@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App</string>
+    <string name="app_name">Alta Express</string>
     <string name="comidaM">Alimentos y bebidas</string>
     <string name="OtherServ">Otros servicios</string>
     <string name="taxis">Sitios de taxis</string>
@@ -21,21 +21,6 @@
     <string name="odila">Odila Restaurant</string>
     <string name="title_activity_scrolling">...</string>
     <string name="pdload">Cargando...</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-    </string>
     <string name="action_settings">Ajustes</string>
     <string name="txtitle2">Contamos con</string>
     <string name="menu1">Menú</string>
@@ -70,4 +55,11 @@
     <string name="anuncios">Anuncios destacados</string>
     <string name="loadingData">Cargando datos...</string>
     <string name="updatedData">Actualizando datos...</string>
+    <string name="covid_string">Covid-19</string>
+    <string name="cancel">Cancelar</string>
+    <string name="optiondialog">Elige una opción</string>
+    <string name="contactString">App Info.</string>
+    <string name="whoiam">¿Quienes somos?</string>
+    <string name="personshop">Mandados</string>
+    <string name="title_mandado">Mandado personalizado</string>
 </resources>
