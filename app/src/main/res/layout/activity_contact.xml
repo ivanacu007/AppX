@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:src="@drawable/noimg"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:layout_gravity="center" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -45,6 +46,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:id="@+id/linearcontact2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/txvContactInfo2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textPrimary"
+                    android:text="@string/howto"
+                    android:fontFamily="sans-serif-medium" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <LinearLayout
                 android:id="@+id/linearoptionscontac"

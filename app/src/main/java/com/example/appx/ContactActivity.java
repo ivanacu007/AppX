@@ -33,7 +33,7 @@ public class ContactActivity extends AppCompatActivity {
     private CollectionReference collectionReference, contactReference;
     private ImageView imageView;
     private TextView txDesc;
-    private LinearLayout linearLayout;
+    private LinearLayout linearLayout, linearLayout2;
     private String number, number2, numberWhats, smstext;
     private final int REQUEST_PHONE_CALL = 1;
     private Button btnCall, btnMessage;
@@ -52,6 +52,7 @@ public class ContactActivity extends AppCompatActivity {
         imageView = findViewById(R.id.contactImg);
         txDesc = findViewById(R.id.txvContactInfo);
         linearLayout = findViewById(R.id.linearcontact);
+        linearLayout2 = findViewById(R.id.linearcontact2);
         btnCall = findViewById(R.id.btnConCall);
         btnMessage = findViewById(R.id.btnConMsj);
 
@@ -95,6 +96,13 @@ public class ContactActivity extends AppCompatActivity {
                             params.setMargins(0, 10, 0, 0);
                             textView.setLayoutParams(params);
                             linearLayout.addView(textView);
+
+                            TextView textView2 = new TextView(ContactActivity.this);
+                            textView2.setText(doc.getString("ins"));
+                            textView2.setTextSize(16);
+                            params.setMargins(0, 10, 0, 0);
+                            textView2.setLayoutParams(params);
+                            linearLayout2.addView(textView2);
                         }
                     }
                 })

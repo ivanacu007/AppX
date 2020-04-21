@@ -67,4 +67,5 @@
     <string name="mandadoMsj">Mensaje</string>
     <string name="optionCallDialog">¿Quieres llamar ahora?</string>
     <string name="confirmCall">Sí</string>
+    <string name="howto">¿Cómo se utiliza?</string>
 </resources>
