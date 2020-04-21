@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("anuncios");
         pd = new ProgressDialog(this);

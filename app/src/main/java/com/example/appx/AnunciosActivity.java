@@ -31,6 +31,7 @@ public class AnunciosActivity extends AppCompatActivity {
     FirebaseFirestore db;
     CustomPromoAdapter adapter;
     ProgressDialog pd;
+    int numberOfColumns = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,12 @@ public class AnunciosActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mRecyclerView = findViewById(R.id.recyA);
         mRecyclerView.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
+        if (this.getResources().getConfiguration().orientation ==
+                this.getResources().getConfiguration()
+                        .ORIENTATION_LANDSCAPE) {
+            numberOfColumns = 2;
+        }
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, numberOfColumns);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         pd = new ProgressDialog(this);
         showA();

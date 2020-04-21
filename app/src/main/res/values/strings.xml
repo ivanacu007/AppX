@@ -62,4 +62,7 @@
     <string name="whoiam">¿Quienes somos?</string>
     <string name="personshop">Mandados</string>
     <string name="title_mandado">Mandado personalizado</string>
+    <string name="mandadotxt">¿Necesitas realizar tu mandado sin salir de casa?</string>
+    <string name="mandadoLlamar">Llamar</string>
+    <string name="mandadoMsj">Mensaje</string>
 </resources>

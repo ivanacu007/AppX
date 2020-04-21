@@ -38,7 +38,7 @@ public class FondasRes extends AppCompatActivity {
     GridLayoutManager gridLayoutManager;
     CollectionReference collectionRef;
     String pdString = "Cargando datos...";
-    int tipoD;
+    int tipoD, numberOfColumns = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +53,16 @@ public class FondasRes extends AppCompatActivity {
         collectionRef = db.collection("negocios");
         mRecyclerView = findViewById(R.id.recV);
         mRecyclerView.setHasFixedSize(true);
+        if (this.getResources().getConfiguration().orientation ==
+                this.getResources().getConfiguration()
+                        .ORIENTATION_LANDSCAPE) {
+            numberOfColumns = 3;
+        }
+
         if (tipoD == 3) {
             gridLayoutManager = new GridLayoutManager(this, 1);
         } else {
-            gridLayoutManager = new GridLayoutManager(this, 2);
+            gridLayoutManager = new GridLayoutManager(this, numberOfColumns);
         }
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
