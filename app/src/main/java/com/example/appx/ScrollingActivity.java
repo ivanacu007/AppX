@@ -1,8 +1,10 @@
 package com.example.appx;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -49,6 +51,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -118,7 +121,7 @@ public class ScrollingActivity extends AppCompatActivity {
         fCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialer();
+                showCallDialog();
             }
         });
 
@@ -144,7 +147,7 @@ public class ScrollingActivity extends AppCompatActivity {
             Intent sendIntent = new Intent("android.intent.action.MAIN");
             sendIntent.setAction(Intent.ACTION_VIEW);
             sendIntent.setPackage("com.whatsapp");
-            String url = "https://api.whatsapp.com/send?phone=" + numberWhats + "&text=" + wMessage;
+            String url = "https://api.whatsapp.com/send?phone=" + numberWhats;
             sendIntent.setData(Uri.parse(url));
             if (sendIntent.resolveActivity(ScrollingActivity.this.getPackageManager()) != null) {
                 startActivity(sendIntent);
@@ -275,6 +278,25 @@ public class ScrollingActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    public void showCallDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ScrollingActivity.this);
+        builder.setCancelable(false);
+        builder.setTitle(this.getString(R.string.optionCallDialog));
+        builder.setPositiveButton(this.getString(R.string.confirmCall), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openDialer();
+            }
+        });
+        builder.setNegativeButton(this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     public void setActionBarTitle(String title) {

@@ -1,5 +1,6 @@
 package com.example.appx.promoclases;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,10 +14,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appx.AnunciosActivity;
 import com.example.appx.ContactActivity;
+import com.example.appx.PersonShop;
 import com.example.appx.R;
 import com.example.appx.ScrollingActivity;
 import com.example.appx.imgclases.ImageViewHolder;
@@ -41,6 +44,7 @@ public class CustomPromoAdapter extends RecyclerView.Adapter<PromoViewHolder> {
     private CollectionReference contactReference;
     private FirebaseFirestore db;
     private String number, number2, smstext, numberWhats;
+    private final int REQUEST_PHONE_CALL = 1;
 
     public CustomPromoAdapter(AnunciosActivity anunciosActivity, List<AnunciosModel> modelList) {
         this.anunciosActivity = anunciosActivity;
@@ -99,9 +103,13 @@ public class CustomPromoAdapter extends RecyclerView.Adapter<PromoViewHolder> {
     }
 
     private void openDialer() {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + number));
-        context.startActivity(intent);
+        if (ActivityCompat.checkSelfPermission(anunciosActivity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(anunciosActivity, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
+            return;
+        }
+        anunciosActivity.startActivity(intent);
     }
 
     private void openWhatsApp(Context context, String smsto, String smstext) {
@@ -142,7 +150,7 @@ public class CustomPromoAdapter extends RecyclerView.Adapter<PromoViewHolder> {
                 // the user clicked on options[which]
                 switch (which) {
                     case 0:
-                        openDialer();
+                        showCallDialog();
                         //Toast.makeText(anunciosActivity, "Picaste llamar", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
@@ -161,6 +169,25 @@ public class CustomPromoAdapter extends RecyclerView.Adapter<PromoViewHolder> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //the user clicked on Cancel
+            }
+        });
+        builder.show();
+    }
+
+    public void showCallDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(anunciosActivity);
+        builder.setCancelable(false);
+        builder.setTitle(anunciosActivity.getString(R.string.optionCallDialog));
+        builder.setPositiveButton(anunciosActivity.getString(R.string.confirmCall), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openDialer();
+            }
+        });
+        builder.setNegativeButton(anunciosActivity.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
             }
         });
         builder.show();

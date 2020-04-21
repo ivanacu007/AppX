@@ -40,5 +40,47 @@
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:id="@+id/linearoptionscontac"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <Button
+                    android:id="@+id/btnConCall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/rounded_button"
+                    android:drawablePadding="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/mandadoLlamar"
+                    android:textColor="@color/white"
+                    android:drawableLeft="@android:drawable/stat_sys_phone_call" />
+
+                <Button
+                    android:id="@+id/btnConMsj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button2"
+                    android:drawablePadding="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/mandadoMsj"
+                    android:textColor="@color/white"
+                    android:drawableLeft="@android:drawable/stat_notify_chat" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>

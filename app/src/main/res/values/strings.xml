@@ -65,4 +65,6 @@
     <string name="mandadotxt">¿Necesitas realizar tu mandado sin salir de casa?</string>
     <string name="mandadoLlamar">Llamar</string>
     <string name="mandadoMsj">Mensaje</string>
+    <string name="optionCallDialog">¿Quieres llamar ahora?</string>
+    <string name="confirmCall">Sí</string>
 </resources>

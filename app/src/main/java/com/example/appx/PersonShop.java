@@ -3,8 +3,12 @@ package com.example.appx;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -36,6 +40,7 @@ public class PersonShop extends AppCompatActivity {
     private Button btnCall, btnMsg;
     private CardView cvM;
     Context context;
+    private final int REQUEST_PHONE_CALL = 1;
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
     @Override
@@ -59,7 +64,7 @@ public class PersonShop extends AppCompatActivity {
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialer();
+                showCallDialog();
             }
         });
 
@@ -124,8 +129,12 @@ public class PersonShop extends AppCompatActivity {
     }
 
     private void openDialer() {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + number));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(PersonShop.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
+            return;
+        }
         startActivity(intent);
     }
 
@@ -155,6 +164,25 @@ public class PersonShop extends AppCompatActivity {
         }
     }
 
+    public void showCallDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PersonShop.this);
+        builder.setCancelable(false);
+        builder.setTitle(this.getString(R.string.optionCallDialog));
+        builder.setPositiveButton(this.getString(R.string.confirmCall), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openDialer();
+            }
+        });
+        builder.setNegativeButton(this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+    }
+
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
@@ -169,4 +197,5 @@ public class PersonShop extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
+
 }
