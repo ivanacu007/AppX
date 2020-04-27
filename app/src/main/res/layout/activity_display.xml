@@ -8,22 +8,26 @@
     tools:context=".ActivityDisplay"
     android:orientation="vertical"
     android:gravity="center">
-
-    <!--   <ImageView
-           android:id="@+id/imgVDis"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:scaleType="matrix"
-           app:srcCompat="@drawable/noimg" />-->
-    <!--    <com.zolad.zoominimageview.ZoomInImageView
-            android:id="@+id/imgVDis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/noimg"/>-->
-    <com.github.chrisbanes.photoview.PhotoView
+    <!--<com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imgVDis"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" />-->
+    <TextView
+        android:id="@+id/txcount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="..."
+        android:textColor="#FFF"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_margin="24dp"
+        android:visibility="visible" />
 
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerG"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
 </LinearLayout>

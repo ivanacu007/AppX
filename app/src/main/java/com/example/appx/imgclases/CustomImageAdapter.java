@@ -46,9 +46,12 @@ public class CustomImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 //                String title = modelList.get(position).getName();
 //                String id = modelList.get(position).getId();
                 String imgUrl = modelList.get(position).getIdImage();
+                String pos = String.valueOf(position);
+                String aux = dataActivity.aux;
                 //Toast.makeText(dataActivity, title+"\n"+id, Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(view.getContext(), ActivityDisplay.class);
-                i.putExtra("URL", imgUrl);
+                i.putExtra("POS", pos);
+                i.putExtra("ID", aux);
                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 view.getContext().startActivity(i);
                 //view.getContext().startActivity(new Intent(view.getContext(), ScrollingActivity.class));

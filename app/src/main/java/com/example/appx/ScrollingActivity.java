@@ -65,7 +65,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private ProgressDialog pd;
     private FirebaseFirestore db;
     private DocumentReference documentReference, documentReferenceM;
-    private CollectionReference collectionReference, imgCollectionReference, contactReference;
+    public CollectionReference collectionReference, imgCollectionReference, contactReference;
     private TextView txdesc, tvtitle;
     private ImageView imgV;
     private FloatingActionButton fMsg, fCall;
@@ -73,11 +73,13 @@ public class ScrollingActivity extends AppCompatActivity {
     private String number, number2;
     private String wMessage = "Mensaje de prueba perro";
     //private Context context;
-    private List<ImageModel> modelList = new ArrayList<>();
+    public List<ImageModel> modelList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private CustomImageAdapter adapter;
     private String pdString = "Cargando datos...";
     private String numberWhats;
+    public String aux;
+    ImageModel model;
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
     @Override
@@ -92,7 +94,7 @@ public class ScrollingActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
         String id = intent.getExtras().getString("ID");
-        String aux = "negocios/" + id;
+        aux = "negocios/" + id;
         //String aux2 = "negocios/"+id;
         documentReference = db.document(aux);
         collectionReference = db.document(aux).collection("Menu");
@@ -244,7 +246,7 @@ public class ScrollingActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot doc : task.getResult()) {
-                            ImageModel model = new ImageModel(
+                            model = new ImageModel(
                                     doc.getString("img"));
                             modelList.add(model);
                             adapter = new CustomImageAdapter(ScrollingActivity.this, modelList);
