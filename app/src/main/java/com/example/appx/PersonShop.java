@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public class PersonShop extends AppCompatActivity {
     private TextView txMandado;
     private String imgUrl, txt, number, number2, numberWhats;
     private LinearLayout linearLayout;
-    private Button btnCall, btnMsg;
+    private CardView btnCall, btnMsg;
     private CardView cvM;
     Context context;
     private final int REQUEST_PHONE_CALL = 1;
@@ -64,7 +65,7 @@ public class PersonShop extends AppCompatActivity {
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCallDialog();
+                openDialer();
             }
         });
 
@@ -129,12 +130,8 @@ public class PersonShop extends AppCompatActivity {
     }
 
     private void openDialer() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
+        Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + number));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(PersonShop.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
-            return;
-        }
         startActivity(intent);
     }
 
@@ -164,7 +161,7 @@ public class PersonShop extends AppCompatActivity {
         }
     }
 
-    public void showCallDialog() {
+/*    public void showCallDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PersonShop.this);
         builder.setCancelable(false);
         builder.setTitle(this.getString(R.string.optionCallDialog));
@@ -181,7 +178,7 @@ public class PersonShop extends AppCompatActivity {
             }
         });
         builder.show();
-    }
+    }*/
 
     public boolean onSupportNavigateUp() {
         onBackPressed();

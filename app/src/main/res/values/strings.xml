@@ -68,4 +68,6 @@
     <string name="optionCallDialog">¿Quieres llamar ahora?</string>
     <string name="confirmCall">Sí</string>
     <string name="howto">¿Cómo se utiliza?</string>
+    <string name="pideahora">¡Haz tu pedido ahora!</string>
+    <string name="contactahora">¡Contactanos!</string>
 </resources>

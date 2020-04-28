@@ -2,6 +2,7 @@ package com.example.appx;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -36,7 +37,7 @@ public class ContactActivity extends AppCompatActivity {
     private LinearLayout linearLayout, linearLayout2;
     private String number, number2, numberWhats, smstext;
     private final int REQUEST_PHONE_CALL = 1;
-    private Button btnCall, btnMessage;
+    private CardView btnCall, btnMessage;
     Context context;
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -62,7 +63,7 @@ public class ContactActivity extends AppCompatActivity {
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCallDialog();
+                openDialer();
             }
         });
         btnMessage.setOnClickListener(new View.OnClickListener() {
@@ -134,13 +135,18 @@ public class ContactActivity extends AppCompatActivity {
                 });
     }
 
-    private void openDialer() {
+    /*private void openDialer() {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + number));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(ContactActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
             return;
         }
+        startActivity(intent);
+    }*/
+    private void openDialer() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + number));
         startActivity(intent);
     }
 

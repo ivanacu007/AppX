@@ -102,13 +102,18 @@ public class CustomPromoAdapter extends RecyclerView.Adapter<PromoViewHolder> {
         return modelList.size();
     }
 
-    private void openDialer() {
+    /*private void openDialer() {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + number));
         if (ActivityCompat.checkSelfPermission(anunciosActivity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(anunciosActivity, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
             return;
         }
+        anunciosActivity.startActivity(intent);
+    }*/
+    private void openDialer() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + number));
         anunciosActivity.startActivity(intent);
     }
 
@@ -150,7 +155,7 @@ public class CustomPromoAdapter extends RecyclerView.Adapter<PromoViewHolder> {
                 // the user clicked on options[which]
                 switch (which) {
                     case 0:
-                        showCallDialog();
+                        openDialer();
                         //Toast.makeText(anunciosActivity, "Picaste llamar", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
