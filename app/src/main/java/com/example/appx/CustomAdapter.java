@@ -61,6 +61,7 @@ public class CustomAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Bind views / set data
+        //holder.rcV.removeAllViews();
         String im = modelList.get(position).getImg();
         holder.txName.setText(modelList.get(position).getName());
         holder.idS.setText(modelList.get(position).getId());

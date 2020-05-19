@@ -55,6 +55,7 @@ public class AnunciosActivity extends AppCompatActivity {
     }
 
     private void showA() {
+        mRecyclerView.removeAllViews();
         pd.setTitle("Cargando datos...");
         pd.show();
         pd.setCancelable(false);

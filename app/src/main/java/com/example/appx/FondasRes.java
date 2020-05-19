@@ -58,7 +58,6 @@ public class FondasRes extends AppCompatActivity {
                         .ORIENTATION_LANDSCAPE) {
             numberOfColumns = 3;
         }
-
         if (tipoD == 3) {
             gridLayoutManager = new GridLayoutManager(this, 1);
         } else {
@@ -68,11 +67,13 @@ public class FondasRes extends AppCompatActivity {
 
         pd = new ProgressDialog(this);
 
+        //modelList.clear();
         changeTitle();
         getData(collectionRef);
     }
 
     private void getData(CollectionReference refColl) {
+        mRecyclerView.removeAllViews();
         pd.setTitle(pdString);
         pd.show();
         pd.setCancelable(false);
@@ -97,6 +98,7 @@ public class FondasRes extends AppCompatActivity {
                                 //txID.setText(id);
                                 modelList.add(model);
                                 adapter = new CustomAdapter(FondasRes.this, modelList);
+                                adapter.notifyDataSetChanged();
                                 mRecyclerView.setAdapter(adapter);
                             } /*else {
                                 Toast.makeText(FondasRes.this, "No se encontraron datos disponibles", Toast.LENGTH_SHORT).show();
@@ -161,8 +163,8 @@ public class FondasRes extends AppCompatActivity {
                     switch (dc.getType()) {
                         case ADDED:
                             if (size == 1) {
-                                pdString = "Nuevos datos agregados";
                                 modelList.clear();
+                                pdString = "Nuevos datos agregados";
                                 getData(collectionRef);
                                 pd.dismiss();
                                 Toast.makeText(FondasRes.this, "Documento agregado", Toast.LENGTH_SHORT).show();

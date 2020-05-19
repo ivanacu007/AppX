@@ -11,6 +11,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     TextView idS, txName;
     ImageView imgV;
     View myView;
+    RecyclerView rcV;
     public ViewHolder(@NonNull View itemView) {
         super(itemView);
         myView = itemView;
@@ -32,6 +33,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         txName = itemView.findViewById(R.id.txtF);
         imgV = itemView.findViewById(R.id.imgV);
         idS = itemView.findViewById(R.id.idS);
+        //rcV = itemView.findViewById(R.id.recV);
     }
     private ViewHolder.ClickListener mClickListener;
     //interface for clicklistener
